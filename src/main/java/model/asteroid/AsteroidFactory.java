@@ -10,4 +10,7 @@ public class AsteroidFactory {
 		return new BasicAsteroid(pos, health, image);
 	}
 	
+	public static UnbreakableAsteroid unbreakableAsteroid(final Vec2 pos, final ImageView image) {
+		return new UnbreakableAsteroid(pos, image);
+	}
 }
