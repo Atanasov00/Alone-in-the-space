@@ -24,14 +24,28 @@ public class AsteroidFactory {
 		Set<UnbreakableAsteroid> unbreakable = new HashSet<>();
 		Random rnd = new Random();
 		
-		while(basic.size() < 10) {
-			basic.add(basicAsteroid(new Vec2(rnd.nextInt(EnumInt.WIDTH.getValue() - 44), rnd.nextInt(EnumInt.HEIGHT.getValue() - 39)), 
-					100, "images/asteroid_01.png"));
-		}
+		int factorX = EnumInt.WIDTH.getValue() / 13;
+		int minX = 0;
+		int maxX = factorX;
+	
+		int randAsteroid;
 		
-		while(unbreakable.size() < 3) {
-			unbreakable.add(unbreakableAsteroid(new Vec2(rnd.nextInt(EnumInt.WIDTH.getValue() - 101), 
-					rnd.nextInt(EnumInt.HEIGHT.getValue() - 101)), "images/asteroid_02.png"));
+		while(basic.size() + unbreakable.size() < 13) {
+			if(unbreakable.size() < 3) {
+				randAsteroid = rnd.nextInt(2);
+				if(randAsteroid == 0) {
+					basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
+					100, "images/asteroid_01.png"));
+				} else if(randAsteroid == 1) {
+					unbreakable.add(unbreakableAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, 
+							rnd.nextInt(EnumInt.HEIGHT.getValue()) - 112), "images/asteroid_02.png"));
+				}
+			} else {
+				basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX)+ minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
+						100, "images/asteroid_01.png"));
+			}
+			minX += factorX;
+			maxX += factorX;
 		}
 		
 		Set<Asteroid> asteroid = new HashSet<>();

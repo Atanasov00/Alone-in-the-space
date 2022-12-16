@@ -253,8 +253,15 @@ public class GameMapImpl implements GameMap {
 
 	@Override
 	public void generateAsteroids() {
-		
-		List<Integer> val = new ArrayList<>();
+		this.asteroids = AsteroidFactory.spawnAsteroids();
+		asteroids.forEach((Asteroid asteroid) -> {
+        	asteroidsMap.put(asteroid, new ImageView(asteroid.getPathImage()));
+        });
+        asteroidsMap.forEach((k,v) ->{
+        	v.relocate(k.getPos().x, k.getPos().y);
+        	this.gameContainer.getChildren().add(v);
+        });
+		/*List<Integer> val = new ArrayList<>();
 		do {
 			val.clear();
 			asteroidsMap.clear();
@@ -282,7 +289,7 @@ public class GameMapImpl implements GameMap {
 		
 		asteroidsMap.forEach((k,v) ->{
     		this.gameContainer.getChildren().add(v);
-    	});
+    	});*/
 	}
 
 }
