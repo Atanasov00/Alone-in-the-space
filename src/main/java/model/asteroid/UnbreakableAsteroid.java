@@ -2,16 +2,14 @@ package model.asteroid;
 
 import com.almasb.fxgl.core.math.Vec2;
 
-import javafx.scene.image.ImageView;
-
 public class UnbreakableAsteroid implements Asteroid {
 
 	private Vec2 pos;
-	private final ImageView image;
+	private final String pathImage;
 	
-	public UnbreakableAsteroid(final Vec2 pos, final ImageView image) {
+	public UnbreakableAsteroid(final Vec2 pos, final String pathImage) {
 		this.pos = pos;
-		this.image = image;
+		this.pathImage = pathImage;
 	}
 	
 	@Override
@@ -25,8 +23,8 @@ public class UnbreakableAsteroid implements Asteroid {
 	}
 
 	@Override
-	public ImageView getImage() {
-		return this.image;
+	public String getPathImage() {
+		return this.pathImage;
 	}
 
 }

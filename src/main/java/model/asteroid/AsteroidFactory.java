@@ -11,12 +11,12 @@ import utilities.EnumInt;
 
 public class AsteroidFactory {
 	
-	public static BasicAsteroid basicAsteroid(final Vec2 pos, final int health, final ImageView image) {
-		return new BasicAsteroid(pos, health, image);
+	public static BasicAsteroid basicAsteroid(final Vec2 pos, final int health, final String pathImage) {
+		return new BasicAsteroid(pos, health, pathImage);
 	}
 	
-	public static UnbreakableAsteroid unbreakableAsteroid(final Vec2 pos, final ImageView image) {
-		return new UnbreakableAsteroid(pos, image);
+	public static UnbreakableAsteroid unbreakableAsteroid(final Vec2 pos, final String pathImage) {
+		return new UnbreakableAsteroid(pos, pathImage);
 	}
 	
 	public static Set<Asteroid> spawnAsteroids(){
@@ -27,7 +27,7 @@ public class AsteroidFactory {
 		while(basic.size() == 0) {
 			if(basic.size() == 0) {
 				basic.add(basicAsteroid(new Vec2(rnd.nextInt(EnumInt.WIDTH.getValue()), rnd.nextInt(EnumInt.HEIGHT.getValue())), 
-						100, new ImageView("images/asteroid_02.png")));
+						100, "images/asteroid_02.png"));
 			}
 		}
 		
