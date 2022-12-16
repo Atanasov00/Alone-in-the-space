@@ -45,6 +45,7 @@ public class GameControllerImpl implements GameController {
                 new Vec2(this.gameMap.getWidth().doubleValue() / 2, this.getGameMap().getHeight().doubleValue() / 2),
                 new Image("images/shipPlayer.png"));
         this.gameMap.setPlayer(this.playerShipController.getPlayerShip());
+        this.gameMap.generateAsteroids();
         this.gameMap.setStatus(new StatusImpl(0, PlayerValues.MAIN_SHIP.getValueFromKey("MAXHEALTH")));
         this.playerShipController.setStatus(this.gameMap.getStatus());
         this.gameMap.getStatus().setPlayerController(this.playerShipController);

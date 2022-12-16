@@ -1,5 +1,6 @@
 package view;
 
+import java.util.Map;
 import java.util.Set;
 
 import controller.gameEngine.GameAnimation;
@@ -8,9 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Entity;
+import model.asteroid.Asteroid;
 import model.bullet.Bullet;
 import model.ship.Ship;
 import model.status.StatusImpl;
+import javafx.scene.image.ImageView;
 
 /**
  * 
@@ -157,4 +160,10 @@ public interface GameMap {
      * checks all the dead entities and remove them and the nodes
      */
     void removeDeadEntity();
+    
+    Set<Asteroid> getAsteroids();
+    
+    Map<Asteroid, ImageView> getMapAsteroids();
+    
+    void generateAsteroids();
 }

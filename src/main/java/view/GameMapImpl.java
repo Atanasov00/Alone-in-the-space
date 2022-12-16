@@ -1,7 +1,11 @@
 package view;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import com.almasb.fxgl.core.math.Vec2;
 
 import controller.gameEngine.GameAnimation;
 import javafx.scene.Node;
@@ -10,7 +14,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Entity;
+import model.asteroid.Asteroid;
+import model.asteroid.AsteroidFactory;
 import model.bullet.Bullet;
+import model.ship.EnemyFactory;
 import model.ship.Ship;
 import model.status.StatusImpl;
 import utilities.EnumInt;
@@ -24,7 +31,9 @@ public class GameMapImpl implements GameMap {
     private Set<Bullet> playerBullets;
     private Set<Bullet> enemyBullets;
     private Set<Ship> enemyShips;
-
+    private Set<Asteroid> asteroids;
+    private Map<Asteroid, ImageView> asteroidsMap;
+    
     private Ship player;
     private ImageView backGroundImage;
     private Scene scene;
@@ -33,7 +42,8 @@ public class GameMapImpl implements GameMap {
     private Stage stage;
 
     private StatusImpl status;
-
+    private final Ship enemy;
+    
     private final int width;
     private final int height;
     private int shipCounter = 1;
@@ -59,11 +69,15 @@ public class GameMapImpl implements GameMap {
         this.gameContainer.prefWidth(width2);
         this.gameContainer.prefHeight(height2);
 
+        enemy = EnemyFactory.basicEnemy(new Vec2());
+        
         this.entities = new HashSet<>();
         this.playerBullets = new HashSet<>();
         this.enemyBullets = new HashSet<>();
         this.enemyShips = new HashSet<>();
-
+        this.asteroids = new HashSet<>();
+        this.asteroidsMap = new HashMap<>();
+        
         this.backGroundImage = new ImageView();
 
         this.width = width2;
@@ -96,6 +110,10 @@ public class GameMapImpl implements GameMap {
         this.player = player;
         this.player.getNode().setId(String.valueOf(this.shipCounter++));
         this.gameContainer.getChildren().add(this.player.getNode());
+        //enemy.setPosition(new Vec2(200,300));
+        //System.out.println(enemy.getPosition());
+        //this.gameContainer.getChildren().add(enemy.getNode());    
+        //enemy.getNode().relocate(enemy.getPosition().x, enemy.getPosition().y);
         this.entities.add(player);
     }
 
@@ -218,5 +236,27 @@ public class GameMapImpl implements GameMap {
             return !e.isAlive();
         });
     }
+
+	@Override
+	public Set<Asteroid> getAsteroids() {
+		return null;
+	}
+
+	@Override
+	public Map<Asteroid, ImageView> getMapAsteroids() {
+		return this.asteroidsMap;
+	}
+
+	@Override
+	public void generateAsteroids() {
+		this.asteroids = AsteroidFactory.spawnAsteroids();
+		asteroids.forEach((Asteroid asteroid) -> {
+        	asteroidsMap.put(asteroid, new ImageView(asteroid.getPathImage()));
+        });
+        asteroidsMap.forEach((k,v) ->{
+        	v.relocate(k.getPos().x, k.getPos().y);
+        	this.gameContainer.getChildren().add(v);
+        });
+	}
 
 }

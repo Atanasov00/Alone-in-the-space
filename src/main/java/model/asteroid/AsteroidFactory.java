@@ -27,7 +27,7 @@ public class AsteroidFactory {
 		while(basic.size() == 0) {
 			if(basic.size() == 0) {
 				basic.add(basicAsteroid(new Vec2(rnd.nextInt(EnumInt.WIDTH.getValue()), rnd.nextInt(EnumInt.HEIGHT.getValue())), 
-						100, "images/asteroid_02.png"));
+						100, "images/asteroid_01.png"));
 			}
 		}
 		
