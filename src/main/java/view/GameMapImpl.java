@@ -1,12 +1,16 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.almasb.fxgl.core.math.Vec2;
 
+import controller.collisionDetection.Collision;
+import controller.collisionDetection.CollisionImpl;
 import controller.gameEngine.GameAnimation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -40,7 +44,7 @@ public class GameMapImpl implements GameMap {
     private GameAnimation gameEngine;
     private AnchorPane gameContainer;
     private Stage stage;
-
+    
     private StatusImpl status;
     private final Ship enemy;
     
@@ -79,7 +83,7 @@ public class GameMapImpl implements GameMap {
         this.asteroidsMap = new HashMap<>();
         
         this.backGroundImage = new ImageView();
-
+        
         this.width = width2;
         this.height = height2;
 
@@ -249,14 +253,36 @@ public class GameMapImpl implements GameMap {
 
 	@Override
 	public void generateAsteroids() {
-		this.asteroids = AsteroidFactory.spawnAsteroids();
-		asteroids.forEach((Asteroid asteroid) -> {
-        	asteroidsMap.put(asteroid, new ImageView(asteroid.getPathImage()));
-        });
-        asteroidsMap.forEach((k,v) ->{
-        	v.relocate(k.getPos().x, k.getPos().y);
-        	this.gameContainer.getChildren().add(v);
-        });
+		
+		List<Integer> val = new ArrayList<>();
+		do {
+			val.clear();
+			asteroidsMap.clear();
+			this.asteroids = AsteroidFactory.spawnAsteroids();
+			asteroids.forEach((Asteroid asteroid) -> {
+        		asteroidsMap.put(asteroid, new ImageView(asteroid.getPathImage()));
+        	});
+        	asteroidsMap.forEach((k,v) ->{
+        		v.relocate(k.getPos().x, k.getPos().y);        	
+        		//this.gameContainer.getChildren().add(v);
+        	});
+        
+        	Set<Asteroid> ast = asteroidsMap.keySet();
+        	asteroidsMap.forEach((k, v) -> {
+        		ast.forEach((Asteroid asteroid)->{
+        			if(!k.equals(asteroid)) {
+        				if(v.intersects(asteroidsMap.get(asteroid).getBoundsInParent())) {
+        					val.add(1);
+        				}
+        			}
+        		});
+        	});
+        	System.out.println(val.size());
+		} while(val.size() != 0);
+		
+		asteroidsMap.forEach((k,v) ->{
+    		this.gameContainer.getChildren().add(v);
+    	});
 	}
 
 }

@@ -24,16 +24,19 @@ public class AsteroidFactory {
 		Set<UnbreakableAsteroid> unbreakable = new HashSet<>();
 		Random rnd = new Random();
 		
-		while(basic.size() == 0) {
-			if(basic.size() == 0) {
-				basic.add(basicAsteroid(new Vec2(rnd.nextInt(EnumInt.WIDTH.getValue()), rnd.nextInt(EnumInt.HEIGHT.getValue())), 
-						100, "images/asteroid_01.png"));
-			}
+		while(basic.size() < 10) {
+			basic.add(basicAsteroid(new Vec2(rnd.nextInt(EnumInt.WIDTH.getValue() - 44), rnd.nextInt(EnumInt.HEIGHT.getValue() - 39)), 
+					100, "images/asteroid_01.png"));
+		}
+		
+		while(unbreakable.size() < 3) {
+			unbreakable.add(unbreakableAsteroid(new Vec2(rnd.nextInt(EnumInt.WIDTH.getValue() - 101), 
+					rnd.nextInt(EnumInt.HEIGHT.getValue() - 101)), "images/asteroid_02.png"));
 		}
 		
 		Set<Asteroid> asteroid = new HashSet<>();
 		asteroid.addAll(basic);
-		
+		asteroid.addAll(unbreakable);
 		return asteroid;
 	}
 }
