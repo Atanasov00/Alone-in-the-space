@@ -1,9 +1,13 @@
 package controller.collisionDetection;
 
+import model.asteroid.Asteroid;
 import model.bullet.Bullet;
 import model.ship.Ship;
 
 import java.util.Collection;
+import java.util.Map;
+
+import javafx.scene.image.ImageView;
 
 /**
  * 
@@ -35,7 +39,7 @@ public interface Collision {
      * @param playerBullets all the bullets shot by the player
      * @param enemiesBullets all the bullets shot by each enemy
      */
-    void checkAllCollision(Ship playerShip, Collection<Ship> enemies, Collection<Bullet> playerBullets, Collection<Bullet> enemiesBullets);
+    void checkAllCollision(Ship playerShip, Collection<Ship> enemies, Collection<Bullet> playerBullets, Collection<Bullet> enemiesBullets, Map<Asteroid, ImageView> asteroids);
 
     /**
      * Check if there is a collision with borders then send the player on the other side
@@ -49,4 +53,6 @@ public interface Collision {
      */
     void checkBulletsBorderCollision(Collection<Bullet> playerBullets, Collection<Bullet> enemiesBullets);
 
+    void checkBulletsAsteroidsCollision(Collection<Bullet> playerBullets, Collection<Bullet> enemiesBullets, 
+				Map<Asteroid, ImageView> asteroids);
 }

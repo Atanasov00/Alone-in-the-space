@@ -1,9 +1,13 @@
 package controller.collisionDetection;
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.almasb.fxgl.core.math.Vec2;
 
+import javafx.scene.image.ImageView;
+import model.asteroid.Asteroid;
+import model.asteroid.BasicAsteroid;
 import model.bullet.Bullet;
 import model.ship.Ship;
 import utilities.EnumInt;
@@ -64,10 +68,12 @@ public class CollisionImpl implements Collision {
 	 * {@inheritDoc}
 	 */
 	public void checkAllCollision(final Ship player, final Collection<Ship> enemies,
-			final Collection<Bullet> playerBullets, final Collection<Bullet> enemiesBullets) {
+			final Collection<Bullet> playerBullets, final Collection<Bullet> enemiesBullets,
+			final Map<Asteroid, ImageView> asteroids) {
 
 		checkBorderCollision(player);
 		checkBulletsBorderCollision(playerBullets, enemiesBullets);
+		checkBulletsAsteroidsCollision(playerBullets, enemiesBullets, asteroids);
 
 		enemies.forEach((Ship enemy) -> {
 			if (enemy.isAlive() && checkEnemyCollision(player, enemy)) {
@@ -115,6 +121,64 @@ public class CollisionImpl implements Collision {
 					|| bullet.getPosition().y <= 0 || bullet.getPosition().y >= EnumInt.HEIGHT.getValue()) {
 				bullet.destroy();
 			}
+		});
+	}
+	
+	public void checkBulletsAsteroidsCollision(final Collection<Bullet> playerBullets, final Collection<Bullet> enemiesBullets, 
+				final Map<Asteroid, ImageView> asteroids) {
+		/*asteroids.forEach((k, v) -> {
+			if(k instanceof BasicAsteroid) {
+				playerBullets.forEach((Bullet bullet) -> {
+					if(v.intersects(bullet.getNode().getBoundsInParent())) {
+						((BasicAsteroid) k).strike(bullet.getDamage());
+						bullet.destroy();
+					}
+				});
+				enemiesBullets.forEach((Bullet bullet) -> {
+					if(v.intersects(bullet.getNode().getBoundsInParent())) {
+						((BasicAsteroid) k).strike(bullet.getDamage());
+						bullet.destroy();
+					}
+				});
+			} else {
+				playerBullets.forEach((Bullet bullet) -> {
+					if(v.intersects(bullet.getNode().getBoundsInParent())) {
+						bullet.destroy();
+					}
+				});
+				enemiesBullets.forEach((Bullet bullet) -> {
+					if(v.intersects(bullet.getNode().getBoundsInParent())) {
+						bullet.destroy();
+					}
+				});
+			}
+			
+		});*/
+		playerBullets.forEach((Bullet bullet) -> {
+			asteroids.forEach((k, v) -> {
+				if(bullet.getNode().getBoundsInParent().intersects(v.getBoundsInParent())) {
+					if(k instanceof BasicAsteroid) {
+						((BasicAsteroid) k).strike(bullet.getDamage());
+						bullet.destroy();
+					} else {
+						bullet.destroy();
+					}
+				}
+				
+			});
+		});
+		enemiesBullets.forEach((Bullet bullet) -> {
+			asteroids.forEach((k, v) -> {
+				if(bullet.getNode().getBoundsInParent().intersects(v.getBoundsInParent())) {
+					if(k instanceof BasicAsteroid) {
+						((BasicAsteroid) k).strike(bullet.getDamage());
+						bullet.destroy();
+					} else {
+						bullet.destroy();
+					}
+				}
+				
+			});
 		});
 	}
 
