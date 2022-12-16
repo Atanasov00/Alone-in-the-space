@@ -8,6 +8,8 @@ import controller.playerController.PlayerShipController;
 import controller.playerController.PlayerShipControllerImpl;
 import controller.sceneManager.SceneManager;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import model.asteroid.Asteroid;
 import model.bullet.Bullet;
 import model.ship.Ship;
 import model.status.StatusImpl;
@@ -19,6 +21,7 @@ import view.GameMap;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -32,6 +35,7 @@ public class GameControllerImpl implements GameController {
     private PlayerShipController playerShipController;
     private InputController inputController;
     private Collection<Ship> enemies;
+    //private Map<Asteroid, ImageView> asteroids;
 
     /**
      * Constructor.
@@ -53,6 +57,7 @@ public class GameControllerImpl implements GameController {
         this.eventController = new EventControllerImpl(this.gameMap);
         this.eventController.getHudBuilder().setStatus(this.gameMap.getStatus());
         this.enemies = this.gameMap.getActiveEnemyShips();
+        //this.asteroids = this.gameMap.getMapAsteroids();
     }
 
     @Override
@@ -89,7 +94,7 @@ public class GameControllerImpl implements GameController {
 
         // Collision check
         this.eventController.getCollision().checkAllCollision(this.playerShipController.getPlayerShip(), this.enemies,
-                this.gameMap.getBulletsShotByPlayer(), this.gameMap.getBulletsShotByEnemies());
+                this.gameMap.getBulletsShotByPlayer(), this.gameMap.getBulletsShotByEnemies(), this.gameMap.getMapAsteroids());
         // Updates the player
         this.playerShipController.update(deltaTime);
 

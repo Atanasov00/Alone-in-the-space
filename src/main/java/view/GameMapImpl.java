@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import model.Entity;
 import model.asteroid.Asteroid;
 import model.asteroid.AsteroidFactory;
+import model.asteroid.BasicAsteroid;
 import model.bullet.Bullet;
 import model.ship.EnemyFactory;
 import model.ship.Ship;
@@ -238,6 +239,28 @@ public class GameMapImpl implements GameMap {
                 this.gameContainer.getChildren().remove(e.getNode());
             }
             return !e.isAlive();
+        });
+        
+        this.asteroidsMap.forEach((k, v) -> {
+        	if(k instanceof BasicAsteroid) {
+        		if(((BasicAsteroid) k).checkHealth()) {
+        			((BasicAsteroid) k).destroy();
+        			this.gameContainer.getChildren().remove(v);
+        		}
+        	}
+        });
+        
+        Set<Asteroid> destroyed = new HashSet<>();
+        this.asteroidsMap.forEach((k, v) -> {
+        	if(k instanceof BasicAsteroid) {
+        		if(!((BasicAsteroid) k).isAlive()) {
+        			destroyed.add(k);
+        		}
+        	}
+        });
+        
+        destroyed.forEach((Asteroid ast) -> {
+        	this.asteroidsMap.remove(ast);
         });
     }
 
