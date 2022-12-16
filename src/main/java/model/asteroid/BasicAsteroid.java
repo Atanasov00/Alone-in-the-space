@@ -7,11 +7,13 @@ public class BasicAsteroid implements Asteroid {
 	private Vec2 pos;
 	private int health;
 	private final String pathImage;
+	private boolean alive;
 	
 	public BasicAsteroid(final Vec2 pos, final int health, final String pathImage) {
 		this.pos = pos;
 		this.health = health;
 		this.pathImage = pathImage;
+		this.alive = true;
 	}
 	
 	@Override
@@ -33,8 +35,16 @@ public class BasicAsteroid implements Asteroid {
 		this.health -= damage;
 	}
 	
-	boolean checkHealth() {
+	public boolean checkHealth() {
 		return this.health <= 0;
+	}
+	
+	public void destroy() {
+		this.alive = false;
+	}
+	
+	public boolean isAlive() {
+		return this.alive;
 	}
 
 }
