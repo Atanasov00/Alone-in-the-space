@@ -7,12 +7,14 @@ import java.util.Set;
 import com.almasb.fxgl.core.math.Vec2;
 
 import javafx.scene.image.ImageView;
+import model.explosion.AsteroidExplosion;
+import model.explosion.Explosion;
 import utilities.EnumInt;
 
 public class AsteroidFactory {
 	
-	public static BasicAsteroid basicAsteroid(final Vec2 pos, final int health, final String pathImage) {
-		return new BasicAsteroid(pos, health, pathImage);
+	public static BasicAsteroid basicAsteroid(final Vec2 pos, final int health, final String pathImage, final Explosion exp) {
+		return new BasicAsteroid(pos, health, pathImage, exp);
 	}
 	
 	public static UnbreakableAsteroid unbreakableAsteroid(final Vec2 pos, final String pathImage) {
@@ -34,15 +36,17 @@ public class AsteroidFactory {
 			if(unbreakable.size() < 3) {
 				randAsteroid = rnd.nextInt(2);
 				if(randAsteroid == 0) {
+					Explosion exp = new AsteroidExplosion("images/explosion_01.png");
 					basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
-					100, "images/asteroid_01.png"));
+					100, "images/asteroid_01.png", exp));
 				} else if(randAsteroid == 1) {
 					unbreakable.add(unbreakableAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, 
 							rnd.nextInt(EnumInt.HEIGHT.getValue()) - 112), "images/asteroid_02.png"));
 				}
 			} else {
+				Explosion exp = new AsteroidExplosion("images/explosion_01.png");
 				basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX)+ minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
-						100, "images/asteroid_01.png"));
+						100, "images/asteroid_01.png", exp));
 			}
 			minX += factorX;
 			maxX += factorX;

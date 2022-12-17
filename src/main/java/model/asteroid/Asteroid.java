@@ -9,4 +9,5 @@ public interface Asteroid {
 	void setPos(Vec2 pos);
 	
 	String getPathImage();
+	
 }

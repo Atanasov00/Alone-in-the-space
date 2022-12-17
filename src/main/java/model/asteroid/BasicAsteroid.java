@@ -2,18 +2,22 @@ package model.asteroid;
 
 import com.almasb.fxgl.core.math.Vec2;
 
+import model.explosion.Explosion;
+
 public class BasicAsteroid implements Asteroid {
 
 	private Vec2 pos;
 	private int health;
 	private final String pathImage;
 	private boolean alive;
+	private final Explosion explosion;
 	
-	public BasicAsteroid(final Vec2 pos, final int health, final String pathImage) {
+	public BasicAsteroid(final Vec2 pos, final int health, final String pathImage, final Explosion explosion) {
 		this.pos = pos;
 		this.health = health;
 		this.pathImage = pathImage;
 		this.alive = true;
+		this.explosion = explosion;
 	}
 	
 	@Override
@@ -45,6 +49,10 @@ public class BasicAsteroid implements Asteroid {
 	
 	public boolean isAlive() {
 		return this.alive;
+	}
+	
+	public Explosion getExplosion() {
+		return this.explosion;
 	}
 
 }
