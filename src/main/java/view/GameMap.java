@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Entity;
 import model.asteroid.Asteroid;
+import model.asteroid.BasicAsteroid;
 import model.bullet.Bullet;
 import model.ship.Ship;
 import model.status.StatusImpl;
@@ -166,4 +167,6 @@ public interface GameMap {
     Map<Asteroid, ImageView> getMapAsteroids();
     
     void generateAsteroids();
+    
+    void startExplosion(BasicAsteroid asteroid);
 }

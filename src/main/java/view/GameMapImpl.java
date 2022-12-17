@@ -1,27 +1,27 @@
 package view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.almasb.fxgl.core.math.Vec2;
 
-import controller.collisionDetection.Collision;
-import controller.collisionDetection.CollisionImpl;
 import controller.gameEngine.GameAnimation;
+import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Entity;
 import model.asteroid.Asteroid;
 import model.asteroid.AsteroidFactory;
 import model.asteroid.BasicAsteroid;
 import model.bullet.Bullet;
+import model.explosion.AsteroidExplosion;
+import model.explosion.Explosion;
 import model.ship.EnemyFactory;
 import model.ship.Ship;
 import model.status.StatusImpl;
@@ -246,6 +246,7 @@ public class GameMapImpl implements GameMap {
         		if(((BasicAsteroid) k).checkHealth()) {
         			((BasicAsteroid) k).destroy();
         			this.gameContainer.getChildren().remove(v);
+        			startExplosion((BasicAsteroid) k);
         		}
         	}
         });
@@ -283,36 +284,19 @@ public class GameMapImpl implements GameMap {
         asteroidsMap.forEach((k,v) ->{
         	v.relocate(k.getPos().x, k.getPos().y);
         	this.gameContainer.getChildren().add(v);
-        });
-		/*List<Integer> val = new ArrayList<>();
-		do {
-			val.clear();
-			asteroidsMap.clear();
-			this.asteroids = AsteroidFactory.spawnAsteroids();
-			asteroids.forEach((Asteroid asteroid) -> {
-        		asteroidsMap.put(asteroid, new ImageView(asteroid.getPathImage()));
-        	});
-        	asteroidsMap.forEach((k,v) ->{
-        		v.relocate(k.getPos().x, k.getPos().y);        	
-        		//this.gameContainer.getChildren().add(v);
-        	});
-        
-        	Set<Asteroid> ast = asteroidsMap.keySet();
-        	asteroidsMap.forEach((k, v) -> {
-        		ast.forEach((Asteroid asteroid)->{
-        			if(!k.equals(asteroid)) {
-        				if(v.intersects(asteroidsMap.get(asteroid).getBoundsInParent())) {
-        					val.add(1);
-        				}
-        			}
-        		});
-        	});
-        	System.out.println(val.size());
-		} while(val.size() != 0);
-		
-		asteroidsMap.forEach((k,v) ->{
-    		this.gameContainer.getChildren().add(v);
-    	});*/
+        });	
+	}
+	
+	public void startExplosion(BasicAsteroid asteroid) {
+		ImageView expImg = new ImageView(asteroid.getExplosion().getPathImage());
+		expImg.relocate(asteroid.getPos().x, asteroid.getPos().y);
+		this.gameContainer.getChildren().add(expImg);
+		FadeTransition ft = new FadeTransition(Duration.millis(3000), expImg);
+		ft.setFromValue(1.0);
+		ft.setToValue(0.0);
+		ft.setCycleCount(1);
+		ft.setAutoReverse(false);
+		ft.play();
 	}
 
 }
