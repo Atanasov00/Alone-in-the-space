@@ -10,6 +10,7 @@ import controller.sceneManager.SceneManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.asteroid.Asteroid;
+import model.asteroid.BasicAsteroid;
 import model.bullet.Bullet;
 import model.ship.Ship;
 import model.status.StatusImpl;
@@ -35,7 +36,7 @@ public class GameControllerImpl implements GameController {
     private PlayerShipController playerShipController;
     private InputController inputController;
     private Collection<Ship> enemies;
-    //private Map<Asteroid, ImageView> asteroids;
+    private Map<Asteroid, ImageView> asteroids;
 
     /**
      * Constructor.
@@ -57,7 +58,7 @@ public class GameControllerImpl implements GameController {
         this.eventController = new EventControllerImpl(this.gameMap);
         this.eventController.getHudBuilder().setStatus(this.gameMap.getStatus());
         this.enemies = this.gameMap.getActiveEnemyShips();
-        //this.asteroids = this.gameMap.getMapAsteroids();
+        this.asteroids = this.gameMap.getMapAsteroids();
     }
 
     @Override
@@ -112,6 +113,15 @@ public class GameControllerImpl implements GameController {
         this.eventController.getHudBuilder().update();
 
         this.gameMap.updateLifeBar();
+        this.asteroids.forEach((k, v) -> {
+        	if(k instanceof BasicAsteroid) {
+        		if(((BasicAsteroid) k).checkHealth()) {
+        			((BasicAsteroid) k).destroy();
+        			this.gameMap.getGameContainer().getChildren().remove(v);
+        			this.gameMap.startExplosion((BasicAsteroid) k);
+        		}
+        	}
+        });
         
         if (!this.eventController.checkGameStatus()) {
             this.gameMap.getGameEngine().stop();

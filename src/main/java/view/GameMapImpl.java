@@ -33,7 +33,17 @@ import utilities.EnumInt;
  */
 public class GameMapImpl implements GameMap {
 
-    private Set<Entity> entities;
+	private static final int ENEMY_DELTA_X_LIFEBAR = 35;
+	private static final int ENEMY_DELTA_Y_LIFEBAR = 65;
+	private static final int PLAYER_DELTA_X_LIFEBAR = 37;
+	private static final int PLAYER_DELTA_Y_LIFEBAR = 50;
+	private static final String LIFEBAR_COLOR = "-fx-accent: green;";
+	private static final int LIFEBAR_WIDTH = 75;
+	private static final int LIFEBAR_HEIGHT = 15;
+	private static final int LIFEBAR_MAPPING_VALUE = 100;
+	private static final int FADE_DURATION = 1500;
+    
+	private Set<Entity> entities;
     private Set<Bullet> playerBullets;
     private Set<Bullet> enemyBullets;
     private Set<Ship> enemyShips;
@@ -248,16 +258,6 @@ public class GameMapImpl implements GameMap {
             return !e.isAlive();
         });
         
-        this.asteroidsMap.forEach((k, v) -> {
-        	if(k instanceof BasicAsteroid) {
-        		if(((BasicAsteroid) k).checkHealth()) {
-        			((BasicAsteroid) k).destroy();
-        			this.gameContainer.getChildren().remove(v);
-        			startExplosion((BasicAsteroid) k);
-        		}
-        	}
-        });
-        
         Set<Asteroid> destroyed = new HashSet<>();
         this.asteroidsMap.forEach((k, v) -> {
         	if(!k.isAlive()) {
@@ -296,7 +296,7 @@ public class GameMapImpl implements GameMap {
 		ImageView expImg = new ImageView(asteroid.getExplosion().getPathImage());
 		expImg.relocate(asteroid.getPos().x, asteroid.getPos().y);
 		this.gameContainer.getChildren().add(expImg);
-		FadeTransition ft = new FadeTransition(Duration.millis(1500), expImg);
+		FadeTransition ft = new FadeTransition(Duration.millis(FADE_DURATION), expImg);
 		ft.setFromValue(1.0);
 		ft.setToValue(0.0);
 		ft.setCycleCount(1);
@@ -305,35 +305,30 @@ public class GameMapImpl implements GameMap {
 	}
 	
 	public void updateLifeBar() {
-		this.playerLifeBar.setProgress(Double.valueOf(player.getHealth()) / 100);
-		//System.out.println(Double.valueOf(player.getHealth()) / 100);
-		this.playerLifeBar.relocate(player.getPosition().x - 35, player.getPosition().y - 50);
+		this.playerLifeBar.setProgress(Double.valueOf(player.getHealth()) / LIFEBAR_MAPPING_VALUE);
+		this.playerLifeBar.relocate(player.getPosition().x - PLAYER_DELTA_X_LIFEBAR, player.getPosition().y - PLAYER_DELTA_Y_LIFEBAR);
 		this.enemyLifeBars.forEach((k, v) -> {
-			v.setProgress(Double.valueOf(k.getHealth()) / this.lifeBarFactor.get(k) / 100);
-			v.relocate(k.getPosition().x - 35, k.getPosition().y - 75);
+			v.setProgress((Double.valueOf(k.getHealth()) / this.lifeBarFactor.get(k)) / LIFEBAR_MAPPING_VALUE);
+			v.relocate(k.getPosition().x - ENEMY_DELTA_X_LIFEBAR, k.getPosition().y - ENEMY_DELTA_Y_LIFEBAR);
 		});
 	}
 	
 	protected void setUpPlayerLifeBar() {
 		this.playerLifeBar = new ProgressBar();
-		this.playerLifeBar.setPrefWidth(75);
-        this.playerLifeBar.setPrefHeight(15);
-        this.playerLifeBar.setStyle("-fx-accent: green;");
-        this.playerLifeBar.setProgress(player.getHealth() / 100);
-        this.playerLifeBar.relocate(player.getPosition().x - 35, player.getPosition().y - 50);
+		this.playerLifeBar.setPrefWidth(LIFEBAR_WIDTH);
+        this.playerLifeBar.setPrefHeight(LIFEBAR_HEIGHT);
+        this.playerLifeBar.setStyle(LIFEBAR_COLOR);
         this.gameContainer.getChildren().add(playerLifeBar);
 	}
 	
 	protected void setUpEnemyLifeBar(Ship enemy) {
 		ProgressBar enemyLifeBar = new ProgressBar();
-		enemyLifeBar.setPrefWidth(75);
-		enemyLifeBar.setPrefHeight(15);
-		enemyLifeBar.setStyle("-fx-accent: green;");
-		enemyLifeBar.setProgress(Double.valueOf(enemy.getHealth()) / 100);
-		enemyLifeBar.relocate(enemy.getPosition().x - 35, enemy.getPosition().y - 100);
+		enemyLifeBar.setPrefWidth(LIFEBAR_WIDTH);
+		enemyLifeBar.setPrefHeight(LIFEBAR_HEIGHT);
+		enemyLifeBar.setStyle(LIFEBAR_COLOR);
 		this.gameContainer.getChildren().add(enemyLifeBar);
 		this.enemyLifeBars.put(enemy, enemyLifeBar);
-		this.lifeBarFactor.put(enemy, Double.valueOf(enemy.getHealth()) / 100);
+		this.lifeBarFactor.put(enemy, Double.valueOf(enemy.getHealth()) / LIFEBAR_MAPPING_VALUE);
 	}
 
 }
