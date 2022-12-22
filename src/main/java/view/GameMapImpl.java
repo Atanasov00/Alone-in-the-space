@@ -11,6 +11,7 @@ import controller.gameEngine.GameAnimation;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -36,10 +37,13 @@ public class GameMapImpl implements GameMap {
     private Set<Bullet> playerBullets;
     private Set<Bullet> enemyBullets;
     private Set<Ship> enemyShips;
+    private Map<Ship, ProgressBar> enemyLifeBars;
+    private Map<Ship, Double> lifeBarFactor;
     private Set<Asteroid> asteroids;
     private Map<Asteroid, ImageView> asteroidsMap;
     
     private Ship player;
+    private ProgressBar playerLifeBar;
     private ImageView backGroundImage;
     private Scene scene;
     private GameAnimation gameEngine;
@@ -47,7 +51,6 @@ public class GameMapImpl implements GameMap {
     private Stage stage;
     
     private StatusImpl status;
-    private final Ship enemy;
     
     private final int width;
     private final int height;
@@ -74,12 +77,13 @@ public class GameMapImpl implements GameMap {
         this.gameContainer.prefWidth(width2);
         this.gameContainer.prefHeight(height2);
 
-        enemy = EnemyFactory.basicEnemy(new Vec2());
-        
+    
         this.entities = new HashSet<>();
         this.playerBullets = new HashSet<>();
         this.enemyBullets = new HashSet<>();
         this.enemyShips = new HashSet<>();
+        this.enemyLifeBars = new HashMap<>();
+        this.lifeBarFactor = new HashMap<>();
         this.asteroids = new HashSet<>();
         this.asteroidsMap = new HashMap<>();
         
@@ -115,10 +119,7 @@ public class GameMapImpl implements GameMap {
         this.player = player;
         this.player.getNode().setId(String.valueOf(this.shipCounter++));
         this.gameContainer.getChildren().add(this.player.getNode());
-        //enemy.setPosition(new Vec2(200,300));
-        //System.out.println(enemy.getPosition());
-        //this.gameContainer.getChildren().add(enemy.getNode());    
-        //enemy.getNode().relocate(enemy.getPosition().x, enemy.getPosition().y);
+        this.setUpPlayerLifeBar();
         this.entities.add(player);
     }
 
@@ -206,6 +207,7 @@ public class GameMapImpl implements GameMap {
         this.enemyShips.add(enemy);
         this.entities.add(enemy);
         this.gameContainer.getChildren().add(enemy.getNode());
+        this.setUpEnemyLifeBar(enemy);
     }
 
     @Override
@@ -237,6 +239,11 @@ public class GameMapImpl implements GameMap {
         this.entities.removeIf(e -> {
             if (!e.isAlive()) {
                 this.gameContainer.getChildren().remove(e.getNode());
+                if(e instanceof Ship) {
+                	this.gameContainer.getChildren().remove(this.enemyLifeBars.get(e));
+                	this.enemyLifeBars.remove(e);
+                	this.lifeBarFactor.remove(e);
+                }
             }
             return !e.isAlive();
         });
@@ -295,6 +302,38 @@ public class GameMapImpl implements GameMap {
 		ft.setCycleCount(1);
 		ft.setAutoReverse(false);
 		ft.play();
+	}
+	
+	public void updateLifeBar() {
+		this.playerLifeBar.setProgress(Double.valueOf(player.getHealth()) / 100);
+		//System.out.println(Double.valueOf(player.getHealth()) / 100);
+		this.playerLifeBar.relocate(player.getPosition().x - 35, player.getPosition().y - 50);
+		this.enemyLifeBars.forEach((k, v) -> {
+			v.setProgress(Double.valueOf(k.getHealth()) / this.lifeBarFactor.get(k) / 100);
+			v.relocate(k.getPosition().x - 35, k.getPosition().y - 75);
+		});
+	}
+	
+	protected void setUpPlayerLifeBar() {
+		this.playerLifeBar = new ProgressBar();
+		this.playerLifeBar.setPrefWidth(75);
+        this.playerLifeBar.setPrefHeight(15);
+        this.playerLifeBar.setStyle("-fx-accent: green;");
+        this.playerLifeBar.setProgress(player.getHealth() / 100);
+        this.playerLifeBar.relocate(player.getPosition().x - 35, player.getPosition().y - 50);
+        this.gameContainer.getChildren().add(playerLifeBar);
+	}
+	
+	protected void setUpEnemyLifeBar(Ship enemy) {
+		ProgressBar enemyLifeBar = new ProgressBar();
+		enemyLifeBar.setPrefWidth(75);
+		enemyLifeBar.setPrefHeight(15);
+		enemyLifeBar.setStyle("-fx-accent: green;");
+		enemyLifeBar.setProgress(Double.valueOf(enemy.getHealth()) / 100);
+		enemyLifeBar.relocate(enemy.getPosition().x - 35, enemy.getPosition().y - 100);
+		this.gameContainer.getChildren().add(enemyLifeBar);
+		this.enemyLifeBars.put(enemy, enemyLifeBar);
+		this.lifeBarFactor.put(enemy, Double.valueOf(enemy.getHealth()) / 100);
 	}
 
 }

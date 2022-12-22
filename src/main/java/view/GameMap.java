@@ -169,4 +169,6 @@ public interface GameMap {
     void generateAsteroids();
     
     void startExplosion(Asteroid asteroid);
+    
+    void updateLifeBar();
 }
