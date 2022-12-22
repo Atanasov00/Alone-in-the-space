@@ -11,13 +11,15 @@ public class BasicAsteroid implements Asteroid {
 	private final String pathImage;
 	private boolean alive;
 	private final Explosion explosion;
+	private final int damageCollision;
 	
-	public BasicAsteroid(final Vec2 pos, final int health, final String pathImage, final Explosion explosion) {
+	public BasicAsteroid(final Vec2 pos, final int health, final String pathImage, final Explosion explosion, final int damageCollision) {
 		this.pos = pos;
 		this.health = health;
 		this.pathImage = pathImage;
 		this.alive = true;
 		this.explosion = explosion;
+		this.damageCollision = damageCollision;
 	}
 	
 	@Override
@@ -53,6 +55,11 @@ public class BasicAsteroid implements Asteroid {
 	
 	public Explosion getExplosion() {
 		return this.explosion;
+	}
+
+	@Override
+	public int getDamageCollision() {
+		return this.damageCollision;
 	}
 
 }

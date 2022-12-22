@@ -13,12 +13,12 @@ import utilities.EnumInt;
 
 public class AsteroidFactory {
 	
-	public static BasicAsteroid basicAsteroid(final Vec2 pos, final int health, final String pathImage, final Explosion exp) {
-		return new BasicAsteroid(pos, health, pathImage, exp);
+	public static BasicAsteroid basicAsteroid(final Vec2 pos, final int health, final String pathImage, final Explosion exp, final int damage) {
+		return new BasicAsteroid(pos, health, pathImage, exp, damage);
 	}
 	
-	public static UnbreakableAsteroid unbreakableAsteroid(final Vec2 pos, final String pathImage) {
-		return new UnbreakableAsteroid(pos, pathImage);
+	public static UnbreakableAsteroid unbreakableAsteroid(final Vec2 pos, final String pathImage, final Explosion exp, final int damage) {
+		return new UnbreakableAsteroid(pos, pathImage, exp, damage);
 	}
 	
 	public static Set<Asteroid> spawnAsteroids(){
@@ -38,15 +38,16 @@ public class AsteroidFactory {
 				if(randAsteroid == 0) {
 					Explosion exp = new AsteroidExplosion("images/explosion_01.png");
 					basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
-					100, "images/asteroid_01.png", exp));
+					100, "images/asteroid_01.png", exp, 10));
 				} else if(randAsteroid == 1) {
+					Explosion exp = new AsteroidExplosion("images/explosion_02.png");
 					unbreakable.add(unbreakableAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, 
-							rnd.nextInt(EnumInt.HEIGHT.getValue()) - 112), "images/asteroid_02.png"));
+							rnd.nextInt(EnumInt.HEIGHT.getValue()) - 112), "images/asteroid_02.png", exp, 40));
 				}
 			} else {
 				Explosion exp = new AsteroidExplosion("images/explosion_01.png");
 				basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX)+ minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
-						100, "images/asteroid_01.png", exp));
+						100, "images/asteroid_01.png", exp, 10));
 			}
 			minX += factorX;
 			maxX += factorX;
