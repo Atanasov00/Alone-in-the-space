@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.almasb.fxgl.core.math.Vec2;
-
 import controller.gameEngine.GameAnimation;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
@@ -19,11 +17,7 @@ import javafx.util.Duration;
 import model.Entity;
 import model.asteroid.Asteroid;
 import model.asteroid.AsteroidFactory;
-import model.asteroid.BasicAsteroid;
 import model.bullet.Bullet;
-import model.explosion.AsteroidExplosion;
-import model.explosion.Explosion;
-import model.ship.EnemyFactory;
 import model.ship.Ship;
 import model.status.StatusImpl;
 import utilities.EnumInt;
