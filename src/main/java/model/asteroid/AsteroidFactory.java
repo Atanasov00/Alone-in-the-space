@@ -6,9 +6,9 @@ import java.util.Set;
 
 import com.almasb.fxgl.core.math.Vec2;
 
-import javafx.scene.image.ImageView;
 import model.explosion.AsteroidExplosion;
 import model.explosion.Explosion;
+import utilities.AsteroidValues;
 import utilities.EnumInt;
 
 public class AsteroidFactory {
@@ -36,18 +36,18 @@ public class AsteroidFactory {
 			if(unbreakable.size() < 3) {
 				randAsteroid = rnd.nextInt(2);
 				if(randAsteroid == 0) {
-					Explosion exp = new AsteroidExplosion("images/explosion_01.png");
 					basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
-					100, "images/asteroid_01.png", exp, 10));
+					AsteroidValues.BASIC_ASTEROID.getInitialHealth(), AsteroidValues.BASIC_ASTEROID.getImagePath(), 
+					AsteroidValues.BASIC_ASTEROID.getExplosion(), AsteroidValues.BASIC_ASTEROID.getDamageCollison()));
 				} else if(randAsteroid == 1) {
-					Explosion exp = new AsteroidExplosion("images/explosion_02.png");
 					unbreakable.add(unbreakableAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, 
-							rnd.nextInt(EnumInt.HEIGHT.getValue()) - 112), "images/asteroid_02.png", exp, 40));
+							rnd.nextInt(EnumInt.HEIGHT.getValue()) - 112), AsteroidValues.UNBREAKABLE_ASTEROID.getImagePath(), 
+							AsteroidValues.UNBREAKABLE_ASTEROID.getExplosion(), AsteroidValues.UNBREAKABLE_ASTEROID.getDamageCollison()));
 				}
 			} else {
-				Explosion exp = new AsteroidExplosion("images/explosion_01.png");
-				basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX)+ minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
-						100, "images/asteroid_01.png", exp, 10));
+				basic.add(basicAsteroid(new Vec2(rnd.nextInt(maxX - minX) + minX, rnd.nextInt(EnumInt.HEIGHT.getValue()) - 50), 
+				AsteroidValues.BASIC_ASTEROID.getInitialHealth(), AsteroidValues.BASIC_ASTEROID.getImagePath(), 
+				AsteroidValues.BASIC_ASTEROID.getExplosion(), AsteroidValues.BASIC_ASTEROID.getDamageCollison()));
 			}
 			minX += factorX;
 			maxX += factorX;
