@@ -111,6 +111,8 @@ public class GameControllerImpl implements GameController {
         this.gameMap.getStatus().update();
         this.eventController.getHudBuilder().update();
 
+        this.gameMap.updateLifeBar();
+        
         if (!this.eventController.checkGameStatus()) {
             this.gameMap.getGameEngine().stop();
             try {
