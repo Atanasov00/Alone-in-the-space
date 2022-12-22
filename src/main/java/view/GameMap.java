@@ -168,5 +168,5 @@ public interface GameMap {
     
     void generateAsteroids();
     
-    void startExplosion(BasicAsteroid asteroid);
+    void startExplosion(Asteroid asteroid);
 }

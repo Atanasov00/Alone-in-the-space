@@ -253,10 +253,8 @@ public class GameMapImpl implements GameMap {
         
         Set<Asteroid> destroyed = new HashSet<>();
         this.asteroidsMap.forEach((k, v) -> {
-        	if(k instanceof BasicAsteroid) {
-        		if(!((BasicAsteroid) k).isAlive()) {
-        			destroyed.add(k);
-        		}
+        	if(!k.isAlive()) {
+        		destroyed.add(k);
         	}
         });
         
@@ -287,11 +285,11 @@ public class GameMapImpl implements GameMap {
         });	
 	}
 	
-	public void startExplosion(BasicAsteroid asteroid) {
+	public void startExplosion(Asteroid asteroid) {
 		ImageView expImg = new ImageView(asteroid.getExplosion().getPathImage());
 		expImg.relocate(asteroid.getPos().x, asteroid.getPos().y);
 		this.gameContainer.getChildren().add(expImg);
-		FadeTransition ft = new FadeTransition(Duration.millis(3000), expImg);
+		FadeTransition ft = new FadeTransition(Duration.millis(1500), expImg);
 		ft.setFromValue(1.0);
 		ft.setToValue(0.0);
 		ft.setCycleCount(1);
