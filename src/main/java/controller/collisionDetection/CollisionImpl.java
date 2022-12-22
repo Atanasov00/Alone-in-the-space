@@ -74,6 +74,7 @@ public class CollisionImpl implements Collision {
 		checkBorderCollision(player);
 		checkBulletsBorderCollision(playerBullets, enemiesBullets);
 		checkBulletsAsteroidsCollision(playerBullets, enemiesBullets, asteroids);
+		checkPlayerShipAsteroidsCollision(player, asteroids);
 
 		enemies.forEach((Ship enemy) -> {
 			if (enemy.isAlive() && checkEnemyCollision(player, enemy)) {
@@ -126,34 +127,6 @@ public class CollisionImpl implements Collision {
 	
 	public void checkBulletsAsteroidsCollision(final Collection<Bullet> playerBullets, final Collection<Bullet> enemiesBullets, 
 				final Map<Asteroid, ImageView> asteroids) {
-		/*asteroids.forEach((k, v) -> {
-			if(k instanceof BasicAsteroid) {
-				playerBullets.forEach((Bullet bullet) -> {
-					if(v.intersects(bullet.getNode().getBoundsInParent())) {
-						((BasicAsteroid) k).strike(bullet.getDamage());
-						bullet.destroy();
-					}
-				});
-				enemiesBullets.forEach((Bullet bullet) -> {
-					if(v.intersects(bullet.getNode().getBoundsInParent())) {
-						((BasicAsteroid) k).strike(bullet.getDamage());
-						bullet.destroy();
-					}
-				});
-			} else {
-				playerBullets.forEach((Bullet bullet) -> {
-					if(v.intersects(bullet.getNode().getBoundsInParent())) {
-						bullet.destroy();
-					}
-				});
-				enemiesBullets.forEach((Bullet bullet) -> {
-					if(v.intersects(bullet.getNode().getBoundsInParent())) {
-						bullet.destroy();
-					}
-				});
-			}
-			
-		});*/
 		playerBullets.forEach((Bullet bullet) -> {
 			asteroids.forEach((k, v) -> {
 				if(bullet.getNode().getBoundsInParent().intersects(v.getBoundsInParent())) {
@@ -179,6 +152,18 @@ public class CollisionImpl implements Collision {
 				}
 				
 			});
+		});
+	}
+
+	@Override
+	public void checkPlayerShipAsteroidsCollision(Ship playerShip, Map<Asteroid, ImageView> asteroids) {
+		asteroids.forEach((k, v) -> {
+			if(playerShip.getNode().getBoundsInParent().intersects(v.getBoundsInParent())) {
+				k.destroy();
+				this.gameMap.getGameContainer().getChildren().remove(v);
+				this.gameMap.startExplosion(k);
+				playerShip.strike(k.getDamageCollision());
+			}
 		});
 	}
 

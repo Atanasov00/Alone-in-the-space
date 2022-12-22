@@ -55,4 +55,6 @@ public interface Collision {
 
     void checkBulletsAsteroidsCollision(Collection<Bullet> playerBullets, Collection<Bullet> enemiesBullets, 
 				Map<Asteroid, ImageView> asteroids);
+    
+    void checkPlayerShipAsteroidsCollision(Ship playerShip, Map<Asteroid, ImageView> asteroids);
 }
