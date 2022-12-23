@@ -18,13 +18,13 @@ public class AsteroidFactory {
 		return new BasicAsteroid(pos, health, pathImage, exp, damage);
 	}
 	
-	public static UnbreakableAsteroid unbreakableAsteroid(final Vec2 pos, final String pathImage, final Explosion exp, final int damage) {
-		return new UnbreakableAsteroid(pos, pathImage, exp, damage);
+	public static StrongerAsteroid unbreakableAsteroid(final Vec2 pos, final String pathImage, final Explosion exp, final int damage) {
+		return new StrongerAsteroid(pos, pathImage, exp, damage);
 	}
 	
 	public static Set<Asteroid> spawnAsteroids(){
 		Set<BasicAsteroid> basic = new HashSet<>();
-		Set<UnbreakableAsteroid> unbreakable = new HashSet<>();
+		Set<StrongerAsteroid> unbreakable = new HashSet<>();
 		Random rnd = new Random();
 		
 		Map<Integer, List<Vec2>> pseudoRandom = new HashMap<>();
