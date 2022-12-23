@@ -157,17 +157,30 @@ public interface GameMap {
     StatusImpl getStatus();
 
     /**
-     * checks all the dead entities and remove them and the nodes
+     * checks all the dead entities and remove them and the nodes.
      */
     void removeDeadEntity();
     
-    Set<Asteroid> getAsteroids();
-    
+    /**
+     * 
+     * @return Map<Asteroid, ImageView> active asteroids in the map.
+     */
     Map<Asteroid, ImageView> getMapAsteroids();
     
+    /**
+     * Method that generates asteroids in the map.
+     */
     void generateAsteroids();
     
+    /**
+     * Method that handle explosion animation.
+     * 
+     * @param asteroid
+     */
     void startExplosion(Asteroid asteroid);
     
+    /**
+     * Method that handle ship's life bars.
+     */
     void updateLifeBar();
 }

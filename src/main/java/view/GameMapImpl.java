@@ -265,11 +265,6 @@ public class GameMapImpl implements GameMap {
     }
 
 	@Override
-	public Set<Asteroid> getAsteroids() {
-		return null;
-	}
-
-	@Override
 	public Map<Asteroid, ImageView> getMapAsteroids() {
 		return this.asteroidsMap;
 	}
