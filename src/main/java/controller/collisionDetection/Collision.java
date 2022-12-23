@@ -46,15 +46,27 @@ public interface Collision {
      * @param playerShip the player ship
      */
     void checkBorderCollision(Ship playerShip);
+   
     /**
      * Check if any bullet collides with borders.
      * @param playerBullets collection of bullets shot by the player
      * @param enemiesBullets collection of all bullets shot by the enemies
      */
     void checkBulletsBorderCollision(Collection<Bullet> playerBullets, Collection<Bullet> enemiesBullets);
-
+    
+    /**
+     * Check if any bullet collides with Asteroids.
+     * @param playerBullets
+     * @param enemiesBullets
+     * @param asteroids
+     */
     void checkBulletsAsteroidsCollision(Collection<Bullet> playerBullets, Collection<Bullet> enemiesBullets, 
 				Map<Asteroid, ImageView> asteroids);
     
+    /**
+     * Check if the playeShip collides with Asteroids;
+     * @param playerShip
+     * @param asteroids
+     */
     void checkPlayerShipAsteroidsCollision(Ship playerShip, Map<Asteroid, ImageView> asteroids);
 }

@@ -125,6 +125,9 @@ public class CollisionImpl implements Collision {
 		});
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	public void checkBulletsAsteroidsCollision(final Collection<Bullet> playerBullets, final Collection<Bullet> enemiesBullets, 
 				final Map<Asteroid, ImageView> asteroids) {
 		playerBullets.forEach((Bullet bullet) -> {
@@ -155,7 +158,9 @@ public class CollisionImpl implements Collision {
 		});
 	}
 
-	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void checkPlayerShipAsteroidsCollision(Ship playerShip, Map<Asteroid, ImageView> asteroids) {
 		asteroids.forEach((k, v) -> {
 			if(playerShip.getNode().getBoundsInParent().intersects(v.getBoundsInParent())) {
