@@ -12,16 +12,47 @@ import com.almasb.fxgl.core.math.Vec2;
 import model.explosion.Explosion;
 import utilities.AsteroidValues;
 
+/**
+ * 
+ * Factory that generates Asteroids.
+ *
+ */
 public class AsteroidFactory {
 	
+	private static final int NUM_BASIC_ASTEROIDS = 10;
+	private static final int NUM_STRONGER_ASTEROIDS = 3;
+	
+	/**
+	 * Method that generates a BasicAsteroid.
+	 * 
+	 * @param pos
+	 * @param health
+	 * @param pathImage
+	 * @param exp
+	 * @param damage
+	 * @return
+	 */
 	public static BasicAsteroid basicAsteroid(final Vec2 pos, final int health, final String pathImage, final Explosion exp, final int damage) {
 		return new BasicAsteroid(pos, health, pathImage, exp, damage);
 	}
 	
+	/**
+	 * Method that generates a StrongerAsteroid.
+	 * 
+	 * @param pos
+	 * @param pathImage
+	 * @param exp
+	 * @param damage
+	 * @return
+	 */
 	public static StrongerAsteroid unbreakableAsteroid(final Vec2 pos, final String pathImage, final Explosion exp, final int damage) {
 		return new StrongerAsteroid(pos, pathImage, exp, damage);
 	}
 	
+	/**
+	 * 
+	 * @return Collection that contains Asteroids.
+	 */
 	public static Set<Asteroid> spawnAsteroids(){
 		Set<BasicAsteroid> basic = new HashSet<>();
 		Set<StrongerAsteroid> unbreakable = new HashSet<>();
@@ -35,10 +66,10 @@ public class AsteroidFactory {
 		pseudoRandom.put(2, List.of(new Vec2(340,17), new Vec2(133,56), new Vec2(190,390), new Vec2(563,15), new Vec2(670,600), new Vec2(777,210), 
 				new Vec2(440,220), new Vec2(950,480), new Vec2(1135,217), new Vec2(339, 410), new Vec2(1100,43), new Vec2(505,313), new Vec2(109, 574)));
 		
-		int spawnList = rnd.nextInt(3);
+		int spawnList = rnd.nextInt(pseudoRandom.size());
 		
-		for(int i = 0; basic.size() + unbreakable.size() < 13; i++) {
-			if(i < 10) {
+		for(int i = 0; basic.size() + unbreakable.size() < NUM_BASIC_ASTEROIDS + NUM_STRONGER_ASTEROIDS; i++) {
+			if(i < NUM_BASIC_ASTEROIDS) {
 				basic.add(basicAsteroid(pseudoRandom.get(spawnList).get(i), AsteroidValues.BASIC_ASTEROID.getInitialHealth(), 
 						AsteroidValues.BASIC_ASTEROID.getImagePath(), AsteroidValues.BASIC_ASTEROID.getExplosion(), 
 						AsteroidValues.BASIC_ASTEROID.getDamageCollison()));
